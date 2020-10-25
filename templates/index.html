@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- https://github.com/joshbuchea/HEAD -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Surf Boards Search</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/css/bootstrap.min.css" integrity="sha384-DhY6onE6f3zzKbjUPRc2hOzGAdEf4/Dz+WJwBvEYL/lkkIsI3ihufq9hk9K4lVoK" crossorigin="anonymous">
+    <link rel="stylesheet" href="./static/styles.css">
+  </head>
+  <body>
+    <h1>SurfBoards</h1>
+    <div id="search">
+      <form id="search-form" class="row" action='/' method="GET">
+        <div class="form-group col-auto">
+          <label for="type" class="visually-hidden">Type</label>
+          <select class="form-control" name="type" id="type" autofocus>
+            <option value="">Type</option>
+            <option value="shortboard">Shortboard</option>
+            <option value="fish">Fish</option>
+            <option value="funboard">Funboard</option>
+            <option value="longboard">Longboard</option>
+            <option value="soft">Soft</option>
+          </select>
+        </div>
+        <div class="form-group col-auto">
+          <label for="color" class="visually-hidden">Color</label>
+          <input type="text" class="form-control" id="color" name="color" placeholder="Color">
+        </div>
+        <div class="col-auto">
+          <button type="submit" class="btn btn-secondary">Search</button>
+        </div>
+      </form>
+    </div>
+    <h2>Results</h2>
+    <div id="results">
+      {% for photo in photos %}
+        <a title="Photo by {{photo['photographer_name']}}" href="{{photo['photographer_url']}}" target="_blank">
+          <img src="{{photo['image']}}" alt="Photo by {{photo['photographer_name']}}">
+        </a>
+      {% endfor %}
+    </div>
+  </body>
+</html>
