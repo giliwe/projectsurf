@@ -17,22 +17,23 @@ def index():
     header = {'Authorization': TOKEN}
     resp = requests.get(url, headers=header)
     resp_json = resp.json()
-    try:
-      num_of_photos =  resp_json['per_page']
+    num_of_photos =  resp_json.get('per_page', 0)
+    if num_of_photos != 0:
       photos_details = [
         {
-          'image': photo['src']['large'],
-          'photographer_name': photo['photographer'],
-          'photographer_url': photo['photographer_url']
+          'image': photo.get('src')['large'],
+          'photographer_name': photo.get('photographer'),
+          'photographer_url': photo.get('photographer_url')
         }
-        for photo in resp_json['photos'][:num_of_photos]
+        for photo in resp_json.get('photos')[:num_of_photos]
       ]
-    except KeyError:
+      return render_template(
+          'index.html',
+          photos=photos_details
+      )
+    else:
       return render_template('index.html')
-    return render_template(
-        'index.html',
-        photos=photos_details
-    )
+
 
 if __name__ == '__main__':
     app.run(threaded=True, port=5000)
