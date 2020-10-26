@@ -19,14 +19,13 @@ def index():
     header = {'Authorization': TOKEN}
     resp = requests.get(url, headers=header)
     resp_json = resp.json()
-    num_of_photos =  resp_json['per_page']
     photos_details = [
       {
         'image': photo['src']['large'],
         'photographer_name': photo['photographer'],
         'photographer_url': photo['photographer_url']
       }
-      for photo in resp_json['photos'][:num_of_photos]
+      for photo in resp_json['photos'][:15]
     ]
     return render_template(
         'index.html',
