@@ -12,21 +12,23 @@ TOKEN = os.environ.get('API_KEY')
 def index():
     surfboard_type = request.args.get('type')
     surfboard_color = request.args.get('color')
-    if surfboard_type == 'Type' and not surfboard_color:
-      return render_template('index.html')
     search_phrase = f'surfboard%20{surfboard_type}%20{surfboard_color}'
     url = f'https://api.pexels.com/v1/search?query={search_phrase}'
     header = {'Authorization': TOKEN}
     resp = requests.get(url, headers=header)
     resp_json = resp.json()
-    photos_details = [
-      {
-        'image': photo['src']['large'],
-        'photographer_name': photo['photographer'],
-        'photographer_url': photo['photographer_url']
-      }
-      for photo in resp_json['photos'][:15]
-    ]
+    try:
+      num_of_photos =  resp_json['per_page']
+      photos_details = [
+        {
+          'image': photo['src']['large'],
+          'photographer_name': photo['photographer'],
+          'photographer_url': photo['photographer_url']
+        }
+        for photo in resp_json['photos'][:num_of_photos]
+      ]
+    except KeyError:
+      return render_template('index.html')
     return render_template(
         'index.html',
         photos=photos_details
